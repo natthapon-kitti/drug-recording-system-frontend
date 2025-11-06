@@ -12,8 +12,16 @@ export class Api {
 
   constructor(private http: HttpClient) { }
 
-  getRecords(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/records`)
+  getStudents(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/students`)
+  }
+
+  getMeds(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/medications`)
+  }
+
+  getRecords(page: number, limit: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/records?page=${page}&limit=${limit}`)
   }
 
   getRecordById(id: number): Observable<any> {
@@ -31,6 +39,8 @@ export class Api {
   deleteRecord(data: any): Observable<any> {
     return this.http.delete(`${this.baseUrl}/records/delete`, data)
   }
+
+
 
 
 }

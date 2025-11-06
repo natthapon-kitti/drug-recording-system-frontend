@@ -1,5 +1,13 @@
-import { Component } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
+import { AfterViewInit, Component, OnInit, signal, ViewChild } from '@angular/core'
+import { MatTableDataSource, MatTableModule } from '@angular/material/table'
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator'
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucidePencil, lucideTrash2 } from '@ng-icons/lucide'
+import { format } from 'date-fns'
+import { th } from 'date-fns/locale'
+import { Api } from '../services/api';
+
+
 
 interface Record {
   record_id: number
@@ -9,27 +17,122 @@ interface Record {
   timestamp: Date
 }
 
-const recordList: Record[] = [
-  {
-    record_id: 1,
-    student_id: 1,
-    med_id: 1,
-    symptoms: "fever",
-    timestamp: new Date()
-  }
-]
+interface Student {
+  student_id: number,
+  student_name: string
+}
+
+interface Medication {
+  med_id: number,
+  med_name: string
+}
+
+const studentList: Student[] = []
+const medList: Medication[] = []
 
 @Component({
+  standalone: true,
   selector: 'app-record-list',
-  imports: [MatTableModule],
+  imports: [MatTableModule, MatPaginatorModule, NgIcon],
+  viewProviders: [provideIcons({ lucidePencil, lucideTrash2 })],
   templateUrl: './record-list.html',
   styleUrl: './record-list.css',
 })
 
 
+export class RecordList implements AfterViewInit {
+  displayedColumns: string[] = ['record_id', 'student_id', 'student_name', 'med_name', 'symptoms', 'date', 'tools']
+  record_list = new MatTableDataSource<Record>()
+  student_list = studentList
+  med_list = medList
+  page = 0
+  limit = 10
+  totalRecords = 0
 
-export class RecordList {
-  displayedColumns: string[] = ['record_id', 'student_id', 'med_id', 'symptoms', 'timestamp']
-  record_list = recordList
+  constructor(private api: Api) { }
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator
+
+  ngAfterViewInit() {
+    this.record_list.paginator = this.paginator
+
+  }
+
+  ngOnInit(): void {
+    this.loadStudents()
+    this.loadMeds()
+    this.loadRecords()
+  }
+
+  loadStudents() {
+    this.api.getStudents().subscribe({
+      next: (data) => {
+        this.student_list = data
+      },
+      error: (err) => {
+        console.error("Error fetching data students: ", err)
+      }
+    })
+  }
+
+  loadMeds() {
+    this.api.getMeds().subscribe({
+      next: (data) => {
+        this.med_list = data
+      },
+      error: (err) => {
+        console.error("Error fetching data medications: ", err)
+      }
+    })
+  }
+
+
+  loadRecords() {
+    this.api.getRecords(this.page + 1, this.limit).subscribe({
+      next: (data) => {
+
+        this.totalRecords = data.total
+
+        this.record_list.data = [...this.record_list.data, ...data.data.map((record: any) => {
+          const student = this.student_list.find((s: any) => s.student_id === record.student_id)
+          const med = this.med_list.find((m: any) => m.med_id === record.med_id)
+          const date = format(new Date(record.timestamp), 'dd/MM/yyyy HH:mm น.', { locale: th })
+
+          return {
+            ...record,
+            student_name: student ? student.student_name : 'Unknown',
+            med_name: med ? med.med_name : 'Unknown',
+            date: date ? date : 'Unknown'
+          }
+
+        })]
+
+
+        console.log(this.record_list.data)
+
+
+      },
+      error: (err) => {
+        console.error('Error fetching data records: ', err)
+      }
+    })
+  }
+
+
+
+  onPageChange(event: PageEvent) {
+
+    if (event.pageIndex > this.page) {
+      this.page = event.pageIndex
+      this.limit = event.pageSize
+
+
+      this.loadRecords()
+    }
+
+
+  }
+
+
 
 }

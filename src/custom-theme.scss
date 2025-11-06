@@ -5,6 +5,19 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+:root {
+  @include mat.table-overrides((background-color:'',
+      header-headline-weight: '800',
+      header-headline-size:'18px',
+      header-headline-font:'Noto Sans Thai',
+      row-item-label-text-font:'Noto Sans Thai',
+      footer-supporting-text-font:'Noto Sans Thai'
+    ));
+
+  @include mat.paginator-overrides((container-text-font:'Noto Sans Thai',
+
+    ))
+}
 
 html {
   @include mat.theme((color: (primary: mat.$azure-palette,
