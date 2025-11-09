@@ -119,6 +119,23 @@ export class RecordList implements AfterViewInit {
   }
 
 
+  deleteRecord(id: number) {
+
+
+    this.api.deleteRecord(id).subscribe({
+      next: (data) => {
+        alert('ลบข้อมูลเรียบร้อยแล้ว ✅')
+        console.log(data)
+        this.record_list = new MatTableDataSource<Record>()
+        this.loadRecords()
+      },
+      error: (err) => {
+        console.error('Error fetching data records: ', err)
+      }
+    })
+  }
+
+
 
   onPageChange(event: PageEvent) {
 

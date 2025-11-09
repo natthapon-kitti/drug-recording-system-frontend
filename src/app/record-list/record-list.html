@@ -48,7 +48,8 @@
             <div class="flex gap-x-2">
                 <ng-icon name="lucidePencil" class="hover:cursor-pointer" size="18" />
 
-                <ng-icon name="lucideTrash2" class="hover:cursor-pointer" size="18" color="darkred" />
+                <ng-icon name="lucideTrash2" class="hover:cursor-pointer" size="18" color="darkred"
+                    (click)="deleteRecord(record.record_id)" />
             </div>
         </td>
     </ng-container>

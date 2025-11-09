@@ -36,8 +36,8 @@ export class Api {
     return this.http.put(`${this.baseUrl}/records/edit`, data)
   }
 
-  deleteRecord(data: any): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/records/delete`, data)
+  deleteRecord(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/records/delete/` + id)
   }
 
 
