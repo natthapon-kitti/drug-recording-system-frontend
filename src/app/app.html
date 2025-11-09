@@ -1,14 +1,19 @@
 <div class="p-20">
-  <h2 class="text-4xl">
-    บันทึกการเบิกยา ของห้องพยาบาล มหาวิทยาลัย
-    <h2>
+  <div class="flex justify-between">
+    <h2 class="text-4xl">
+      บันทึกการเบิกยา
+    </h2>
 
-      <div>
-        <app-record-list />
-      </div>
+    <button matButton="outlined" [routerLink]="['/add-record']" routerLinkActive="active">
+
+      เพิ่มรายการ
+    </button>
 
 
+  </div>
 
-      <div>
 
-      </div>
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

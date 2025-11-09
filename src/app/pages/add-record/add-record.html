@@ -1,0 +1,32 @@
+<div class="p-6 max-w-lg mx-auto bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold mb-4">เพิ่มรายการบันทึกการเบิกยา</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+        <mat-form-field class="w-full">
+            <mat-label>ชื่อนักศึกษา</mat-label>
+            <mat-select formControlName="student_id">
+                <mat-option *ngFor="let s of student_list" [value]="s.student_id">
+                    {{ s.student_name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>ชื่อยา</mat-label>
+            <mat-select formControlName="med_id">
+                <mat-option *ngFor="let m of med_list" [value]="m.med_id">
+                    {{ m.med_name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>อาการ</mat-label>
+            <input matInput formControlName="symptoms" placeholder="เช่น ปวดหัว เจ็บคอ" />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" class="w-full">
+            บันทึกข้อมูล
+        </button>
+    </form>
+</div>
