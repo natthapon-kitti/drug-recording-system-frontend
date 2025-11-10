@@ -8,7 +8,7 @@ import { th } from 'date-fns/locale'
 import { Api } from '../services/api';
 import { RouterLink, RouterModule } from "@angular/router";
 
-
+import { Input } from '@angular/core';
 
 interface Record {
   record_id: number
@@ -49,6 +49,7 @@ export class RecordList implements AfterViewInit {
   page = 0
   limit = 10
   totalRecords = 0
+  @Input() searchTerm: string = ''
 
   constructor(private api: Api) { }
 
@@ -64,6 +65,17 @@ export class RecordList implements AfterViewInit {
     this.loadMeds()
     this.loadRecords()
   }
+
+  onSearch(event: Event) {
+    const input = event.target as HTMLInputElement
+    this.searchTerm = input.value
+    console.log(input.value)
+
+    this.page = 0
+    this.record_list.data = []
+    this.loadRecords()
+  }
+
 
   loadStudents() {
     this.api.getStudents().subscribe({
@@ -89,12 +101,19 @@ export class RecordList implements AfterViewInit {
 
 
   loadRecords() {
-    this.api.getRecords(this.page + 1, this.limit).subscribe({
-      next: (data) => {
 
+
+    const filterId: number = this.searchTerm && this.searchTerm !== '0'
+      ? parseInt(this.searchTerm)
+      : 0
+
+    console.log("filterId :", filterId)
+
+    this.api.getRecords(this.page + 1, this.limit, filterId).subscribe({
+      next: (data) => {
         this.totalRecords = data.total
 
-        this.record_list.data = [...this.record_list.data, ...data.data.map((record: any) => {
+        const mappedRecords = data.data.map((record: any) => {
           const student = this.student_list.find((s: any) => s.student_id === record.student_id)
           const med = this.med_list.find((m: any) => m.med_id === record.med_id)
           const date = format(new Date(record.timestamp), 'dd/MM/yyyy HH:mm น.', { locale: th })
@@ -103,15 +122,17 @@ export class RecordList implements AfterViewInit {
             ...record,
             student_name: student ? student.student_name : 'Unknown',
             med_name: med ? med.med_name : 'Unknown',
-            date: date ? date : 'Unknown'
+            date: date || 'Unknown'
           }
+        })
 
-        })]
-
+        if (filterId !== null) {
+          this.record_list.data = mappedRecords
+        } else {
+          this.record_list.data = [...this.record_list.data, ...mappedRecords]
+        }
 
         console.log(this.record_list.data)
-
-
       },
       error: (err) => {
         console.error('Error fetching data records: ', err)

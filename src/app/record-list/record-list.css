@@ -5,3 +5,34 @@
 .mat-column-student_id {
     width: 6%;
 }
+
+.search-container {
+    width: 300px;
+    text-align: left;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.result-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 8px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+.result-list li {
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.result-list li:hover {
+    background-color: #f0f0f0;
+}

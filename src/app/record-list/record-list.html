@@ -1,65 +1,65 @@
-<!-- @for (record of record_list; track record.record_id) {
-<div class="flex text-red-500 text-2xl gap-x-2">
-    <p>{{record.record_id}}</p>
-    <p>{{record.student_id}}</p>
-    <p>{{record.med_id}}</p>
-    <p>{{record.symptoms}}</p>
-    <p>{{record.timestamp}}</p>
+<div class="mt-5 gap-y-5">
+
+    <input type="text" (input)="onSearch($event)" placeholder="พิมพ์เพื่อค้นหาหมายเลข Record" class="search-input" />
+
+
+    <table mat-table [dataSource]="record_list" class="mat-elevation-z8 mt-5 ">
+        <ng-container matColumnDef="record_id">
+            <th mat-header-cell *matHeaderCellDef>No.</th>
+            <td mat-cell *matCellDef="let record"> {{record.record_id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="student_id">
+            <th mat-header-cell *matHeaderCellDef>รหัสนักศึกษา</th>
+            <td mat-cell *matCellDef="let record"> {{record.student_id}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="student_name">
+            <th mat-header-cell *matHeaderCellDef>ชื่อนักศึกษา </th>
+            <td mat-cell *matCellDef="let record"> {{record.student_name}} </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="med_name">
+            <th mat-header-cell *matHeaderCellDef>ยาที่จ่าย</th>
+            <td mat-cell *matCellDef="let record"> {{record.med_name}} </td>
+
+        </ng-container>
+        <ng-container matColumnDef="symptoms">
+            <th mat-header-cell *matHeaderCellDef>อาการ </th>
+            <td mat-cell *matCellDef="let  record"> {{record.symptoms}} </td>
+        </ng-container>
+        <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>วันที่</th>
+            <td mat-cell *matCellDef="let record"> {{record.date}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="tools">
+            <th mat-header-cell *matHeaderCellDef>จัดการ</th>
+            <td mat-cell *matCellDef="let record" class="">
+                <div class="flex gap-x-2">
+                    <ng-icon name="lucidePencil" class="hover:cursor-pointer" size="18"
+                        [routerLink]="['/edit-record',record.record_id ]" />
+
+                    <ng-icon name="lucideTrash2" class="hover:cursor-pointer" size="18" color="darkred"
+                        (click)="deleteRecord(record.record_id)" />
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+    </table>
+    <mat-paginator [length]="totalRecords" [pageSize]="limit" [pageIndex]="page" (page)="onPageChange($event)"
+        [pageSizeOptions]="[10,20,50]" showFirstLastButtons>
+    </mat-paginator>
+
+    <div *ngIf="record_list.data.length === 0" class="no-data">
+        ไม่พบข้อมูล
+    </div>
+
 </div>
-
-} -->
-
-<table mat-table [dataSource]="record_list" class="mat-elevation-z8 mt-5 ">
-    <ng-container matColumnDef="record_id">
-        <th mat-header-cell *matHeaderCellDef>No.</th>
-        <td mat-cell *matCellDef="let record"> {{record.record_id}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="student_id">
-        <th mat-header-cell *matHeaderCellDef>รหัสนักศึกษา</th>
-        <td mat-cell *matCellDef="let record"> {{record.student_id}} </td>
-    </ng-container>
-
-
-    <ng-container matColumnDef="student_name">
-        <th mat-header-cell *matHeaderCellDef>ชื่อนักศึกษา </th>
-        <td mat-cell *matCellDef="let record"> {{record.student_name}} </td>
-
-    </ng-container>
-
-    <ng-container matColumnDef="med_name">
-        <th mat-header-cell *matHeaderCellDef>ยาที่จ่าย</th>
-        <td mat-cell *matCellDef="let record"> {{record.med_name}} </td>
-
-    </ng-container>
-    <ng-container matColumnDef="symptoms">
-        <th mat-header-cell *matHeaderCellDef>อาการ </th>
-        <td mat-cell *matCellDef="let  record"> {{record.symptoms}} </td>
-    </ng-container>
-    <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef>วันที่</th>
-        <td mat-cell *matCellDef="let record"> {{record.date}} </td>
-    </ng-container>
-
-
-    <ng-container matColumnDef="tools">
-        <th mat-header-cell *matHeaderCellDef>จัดการ</th>
-        <td mat-cell *matCellDef="let record" class="">
-            <div class="flex gap-x-2">
-                <ng-icon name="lucidePencil" class="hover:cursor-pointer" size="18"
-                    [routerLink]="['/edit-record',record.record_id ]" />
-
-                <ng-icon name="lucideTrash2" class="hover:cursor-pointer" size="18" color="darkred"
-                    (click)="deleteRecord(record.record_id)" />
-            </div>
-        </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-
-</table>
-<mat-paginator [length]="totalRecords" [pageSize]="limit" [pageIndex]="page" (page)="onPageChange($event)"
-    [pageSizeOptions]="[10,20,50]" showFirstLastButtons>
-</mat-paginator>

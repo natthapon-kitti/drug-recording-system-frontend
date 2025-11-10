@@ -20,8 +20,8 @@ export class Api {
     return this.http.get(`${this.baseUrl}/medications`)
   }
 
-  getRecords(page: number, limit: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/records?page=${page}&limit=${limit}`)
+  getRecords(page: number, limit: number,filterId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/records?page=${page}&limit=${limit}&filterId=${filterId}`)
   }
 
   getRecordById(id: number): Observable<any> {
