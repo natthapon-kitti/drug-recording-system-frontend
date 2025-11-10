@@ -6,6 +6,7 @@ import { lucidePencil, lucideTrash2 } from '@ng-icons/lucide'
 import { format } from 'date-fns'
 import { th } from 'date-fns/locale'
 import { Api } from '../services/api';
+import { RouterLink, RouterModule } from "@angular/router";
 
 
 
@@ -33,7 +34,7 @@ const medList: Medication[] = []
 @Component({
   standalone: true,
   selector: 'app-record-list',
-  imports: [MatTableModule, MatPaginatorModule, NgIcon],
+  imports: [MatTableModule, MatPaginatorModule, NgIcon, RouterLink, RouterModule],
   viewProviders: [provideIcons({ lucidePencil, lucideTrash2 })],
   templateUrl: './record-list.html',
   styleUrl: './record-list.css',

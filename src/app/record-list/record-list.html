@@ -46,7 +46,8 @@
         <th mat-header-cell *matHeaderCellDef>จัดการ</th>
         <td mat-cell *matCellDef="let record" class="">
             <div class="flex gap-x-2">
-                <ng-icon name="lucidePencil" class="hover:cursor-pointer" size="18" />
+                <ng-icon name="lucidePencil" class="hover:cursor-pointer" size="18"
+                    [routerLink]="['/edit-record',record.record_id ]" />
 
                 <ng-icon name="lucideTrash2" class="hover:cursor-pointer" size="18" color="darkred"
                     (click)="deleteRecord(record.record_id)" />
